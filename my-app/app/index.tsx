@@ -1,4 +1,6 @@
 import { LabeledField } from "@/components/labeled-field";
+import { validateEmail } from "@/utils/validate-email";
+import { validatePassword } from "@/utils/validate-password";
 import * as React from "react";
 import { Pressable, Text, View } from "react-native";
 
@@ -16,47 +18,18 @@ export default function Index() {
   }
 
   function handleSubmit() {
-    if (!email) {
-      console.log("empty email");
-      return;
+    const { valid: validEmail, errorMessage: emailErrorMessage } =
+      validateEmail(email);
+
+    if (!validEmail) {
+      console.log(emailErrorMessage);
     }
 
-    const [local, domain, ...invalidChars] = email.split("@");
-    if (invalidChars && invalidChars.length > 0) {
-      console.log("invalid email");
-      return;
-    }
+    const { valid: validPassword, errorMessage: passwordErrorMessage } =
+      validatePassword(password);
 
-    if (!local || local.length === 0) {
-      console.log("invalid email");
-      return;
-    }
-
-    if (!domain || domain.length <= 4) {
-      console.log("invalid email");
-      return;
-    }
-
-    const lastHostname = domain.split(".").pop();
-
-    if (!lastHostname || lastHostname !== "com") {
-      console.log("invalid email");
-      return;
-    }
-
-    if (!password) {
-      console.log("empty password");
-      return;
-    }
-
-    if (password.length < 7) {
-      console.log("password must be at least 7 characters long");
-      return;
-    }
-
-    if (!password.match(/^(?=.*[A-Za-z])(?=.*\d).*$/gm)) {
-      console.log("password must contain both a letter and a number");
-      return;
+    if (!validPassword) {
+      console.log(passwordErrorMessage);
     }
   }
 
