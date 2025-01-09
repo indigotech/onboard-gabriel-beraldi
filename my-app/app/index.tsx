@@ -6,31 +6,31 @@ import { Pressable, Text, View } from "react-native";
 
 export default function Index() {
   const [email, setEmail] = React.useState("");
+  const [validEmail, setValidEmail] = React.useState(true);
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
 
   function handleEmailChange(newEmail: string) {
     setEmail(newEmail);
   }
 
   const [password, setPassword] = React.useState("");
+  const [validPassword, setValidPassword] = React.useState(true);
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
 
   function handlePasswordChange(newPassword: string) {
     setPassword(newPassword);
   }
 
   function handleSubmit() {
-    const { valid: validEmail, errorMessage: emailErrorMessage } =
-      validateEmail(email);
+    const emailValidationResult = validateEmail(email);
 
-    if (!validEmail) {
-      console.log(emailErrorMessage);
-    }
+    setValidEmail(emailValidationResult.valid);
+    setEmailErrorMessage(emailValidationResult.errorMessage ?? "");
 
-    const { valid: validPassword, errorMessage: passwordErrorMessage } =
-      validatePassword(password);
+    const passwordValidationResult = validatePassword(password);
 
-    if (!validPassword) {
-      console.log(passwordErrorMessage);
-    }
+    setValidPassword(passwordValidationResult.valid);
+    setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
   }
 
   return (
@@ -45,11 +45,15 @@ export default function Index() {
         label="Email:"
         value={email}
         onValueChange={handleEmailChange}
+        valid={validEmail}
+        invalidMessage={emailErrorMessage}
       />
       <LabeledField
         label="Senha:"
         value={password}
         onValueChange={handlePasswordChange}
+        valid={validPassword}
+        invalidMessage={passwordErrorMessage}
       />
       <Pressable
         onPress={handleSubmit}

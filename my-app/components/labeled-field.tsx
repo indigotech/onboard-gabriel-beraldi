@@ -5,6 +5,8 @@ interface LabeledFieldProps {
   label: string;
   value: string;
   onValueChange: (newValue: string) => void;
+  valid?: boolean;
+  invalidMessage?: string;
 }
 
 export function LabeledField(props: LabeledFieldProps) {
@@ -14,8 +16,9 @@ export function LabeledField(props: LabeledFieldProps) {
       <TextInput
         onChangeText={props.onValueChange}
         value={props.value}
-        style={{ backgroundColor: "#FFF" }}
+        style={{ backgroundColor: props.valid ? "#FFF" : "#ffe8e8" }}
       />
+      {!props.valid && <Text>{props.invalidMessage}</Text>}
     </View>
   );
 }
