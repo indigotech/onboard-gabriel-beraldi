@@ -1,5 +1,6 @@
 import { login } from "@/api/user/login";
 import { LabeledField } from "@/components/labeled-field";
+import { storeData } from "@/utils/storage";
 import { validateEmail } from "@/utils/validate-email";
 import { validatePassword } from "@/utils/validate-password";
 import * as React from "react";
@@ -22,6 +23,8 @@ export default function Index() {
     setPassword(newPassword);
   }
 
+  const [loginError, setLoginError] = React.useState("");
+
   function handleSubmit() {
     const emailValidationResult = validateEmail(email);
 
@@ -33,9 +36,16 @@ export default function Index() {
     setValidPassword(passwordValidationResult.valid);
     setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
 
-    login(email, password).then((response) => {
-      console.log(response);
-    });
+    if (emailValidationResult.valid && passwordValidationResult.valid) {
+      login(email, password).then((response) => {
+        if (response.data) {
+          storeData("token", response.data.token);
+          setLoginError("");
+        } else {
+          setLoginError(response.errors?.[0].message ?? "");
+        }
+      });
+    }
   }
 
   return (
@@ -72,6 +82,7 @@ export default function Index() {
       >
         <Text>Entrar</Text>
       </Pressable>
+      {loginError && <Text>{loginError}</Text>}
     </View>
   );
 }
