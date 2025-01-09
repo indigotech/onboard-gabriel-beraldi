@@ -1,16 +1,27 @@
+import { LabeledField } from "@/components/labeled-field";
 import * as React from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 export default function Index() {
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        padding: 16,
+        gap: 8,
       }}
     >
-      <Text>Hello, World!</Text>
+      <LabeledField label="Email:" />
+      <LabeledField label="Senha:" />
+      <Pressable
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#FFF",
+        }}
+      >
+        <Text>Entrar</Text>
+      </Pressable>
     </View>
   );
 }
