@@ -1,3 +1,4 @@
+import { login } from "@/api/user/login";
 import { LabeledField } from "@/components/labeled-field";
 import { validateEmail } from "@/utils/validate-email";
 import { validatePassword } from "@/utils/validate-password";
@@ -31,6 +32,10 @@ export default function Index() {
 
     setValidPassword(passwordValidationResult.valid);
     setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
+
+    login(email, password).then((response) => {
+      console.log(response);
+    });
   }
 
   return (
