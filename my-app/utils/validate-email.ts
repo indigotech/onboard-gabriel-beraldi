@@ -3,27 +3,14 @@ interface ValidationResult {
   errorMessage?: string;
 }
 
+const EMAIL_VALIDATION_REGEX = /^\w+(\.\w+)*@(\w+\.)+com(.br)?$/gm;
+
 export function validateEmail(email: string): ValidationResult {
   if (!email) {
     return { valid: false, errorMessage: "E-mail vazio." };
   }
 
-  const [local, domain, ...invalidChars] = email.split("@");
-  if (invalidChars && invalidChars.length > 0) {
-    return { valid: false, errorMessage: "E-mail invalido." };
-  }
-
-  if (!local || local.length === 0) {
-    return { valid: false, errorMessage: "E-mail invalido." };
-  }
-
-  if (!domain || domain.length <= 4) {
-    return { valid: false, errorMessage: "E-mail invalido." };
-  }
-
-  const lastHostname = domain.split(".").pop();
-
-  if (!lastHostname || lastHostname !== "com") {
+  if (!email.match(EMAIL_VALIDATION_REGEX)) {
     return { valid: false, errorMessage: "E-mail invalido." };
   }
 
