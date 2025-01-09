@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, TextInput, View } from "react-native";
+import { InputModeOptions, Text, TextInput, View } from "react-native";
 
 interface LabeledFieldProps {
   label: string;
@@ -7,6 +7,7 @@ interface LabeledFieldProps {
   onValueChange: (newValue: string) => void;
   valid?: boolean;
   invalidMessage?: string;
+  inputMode?: InputModeOptions;
 }
 
 export function LabeledField(props: LabeledFieldProps) {
@@ -17,6 +18,8 @@ export function LabeledField(props: LabeledFieldProps) {
         onChangeText={props.onValueChange}
         value={props.value}
         style={{ backgroundColor: props.valid ? "#FFF" : "#ffe8e8" }}
+        inputMode={props.inputMode}
+        autoCapitalize="none"
       />
       {!props.valid && <Text>{props.invalidMessage}</Text>}
     </View>

@@ -47,6 +47,7 @@ export default function Index() {
         onValueChange={handleEmailChange}
         valid={validEmail}
         invalidMessage={emailErrorMessage}
+        inputMode="email"
       />
       <LabeledField
         label="Senha:"
@@ -54,6 +55,7 @@ export default function Index() {
         onValueChange={handlePasswordChange}
         valid={validPassword}
         invalidMessage={passwordErrorMessage}
+        inputMode="text"
       />
       <Pressable
         onPress={handleSubmit}
