@@ -5,26 +5,26 @@ interface ValidationResult {
 
 export function validateEmail(email: string): ValidationResult {
   if (!email) {
-    return { valid: false, errorMessage: "Empty E-mail" };
+    return { valid: false, errorMessage: "E-mail vazio." };
   }
 
   const [local, domain, ...invalidChars] = email.split("@");
   if (invalidChars && invalidChars.length > 0) {
-    return { valid: false, errorMessage: "Invalid email" };
+    return { valid: false, errorMessage: "E-mail invalido." };
   }
 
   if (!local || local.length === 0) {
-    return { valid: false, errorMessage: "Invalid email" };
+    return { valid: false, errorMessage: "E-mail invalido." };
   }
 
   if (!domain || domain.length <= 4) {
-    return { valid: false, errorMessage: "Invalid email" };
+    return { valid: false, errorMessage: "E-mail invalido." };
   }
 
   const lastHostname = domain.split(".").pop();
 
   if (!lastHostname || lastHostname !== "com") {
-    return { valid: false, errorMessage: "Invalid email" };
+    return { valid: false, errorMessage: "E-mail invalido." };
   }
 
   return { valid: true };
