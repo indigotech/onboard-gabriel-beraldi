@@ -7,17 +7,9 @@ interface LabeledFieldProps {
 
 export function LabeledField(props: LabeledFieldProps) {
   return (
-    <View
-      style={{
-        gap: 8,
-      }}
-    >
+    <View style={{ gap: 8 }}>
       <Text>{props.label}</Text>
-      <TextInput
-        style={{
-          backgroundColor: "#FFF",
-        }}
-      />
+      <TextInput style={{ backgroundColor: "#FFF" }} />
     </View>
   );
 }
