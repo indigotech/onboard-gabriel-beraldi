@@ -1,5 +1,5 @@
 import { User } from "@/interfaces/user";
-import { ApiResponse } from "@/interfaces/apiResponse";
+import { ApiResponse } from "@/interfaces/api-response";
 import { apiClient } from "@/api";
 import { AxiosError, isAxiosError } from "axios";
 
