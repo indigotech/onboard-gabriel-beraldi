@@ -1,23 +1,21 @@
-import { UserInfoCard } from "@/components/user-info-card";
 import * as React from "react";
+import { listUsers } from "@/api/user/list";
+import { User } from "@/interfaces/user";
 import { View, FlatList } from "react-native";
-
-const userList = [
-  {
-    name: "Exemplo 1",
-    email: "exemplo1@exemplo.com",
-  },
-  {
-    name: "Exemplo 2",
-    email: "exemplo2@exemplo.com",
-  },
-  {
-    name: "Exemplo 3",
-    email: "exemplo3@exemplo.com",
-  },
-];
+import { UserInfoCard } from "@/components/user-info-card";
 
 export default function UserList() {
+  const [userList, setUserList] = React.useState<User[]>([]);
+
+  React.useEffect(() => {
+    function fetchUsers() {
+      listUsers().then((response) => {
+        setUserList(response.data?.nodes ?? []);
+      });
+    }
+
+    fetchUsers();
+  }, []);
   return (
     <View
       style={{
