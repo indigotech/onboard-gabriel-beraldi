@@ -1,6 +1,6 @@
 import { User } from "@/interfaces/user";
 import { ApiResponse } from "@/interfaces/apiResponse";
-import { api } from "..";
+import { apiClient } from "@/api";
 import { AxiosError, isAxiosError } from "axios";
 
 interface LoginResult {
@@ -12,7 +12,7 @@ export async function login(
   email: string,
   password: string,
 ): Promise<ApiResponse<LoginResult>> {
-  const response = await api
+  const response = await apiClient
     .post<ApiResponse<LoginResult>>("/authenticate", {
       email,
       password,

@@ -1,4 +1,4 @@
-import { ApiError } from "./apiError";
+import { ApiError } from "@/interfaces/apiError";
 
 export interface ApiResponse<T> {
   data: T | null;
