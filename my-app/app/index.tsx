@@ -3,6 +3,7 @@ import { LabeledField } from "@/components/labeled-field";
 import { storeData } from "@/utils/storage";
 import { validateEmail } from "@/utils/validate-email";
 import { validatePassword } from "@/utils/validate-password";
+import { Link } from "expo-router";
 import * as React from "react";
 import { Pressable, Text, View } from "react-native";
 
@@ -83,6 +84,7 @@ export default function Index() {
         <Text>Entrar</Text>
       </Pressable>
       {loginError && <Text>{loginError}</Text>}
+      <Link href={"/user/list"}>próxima página</Link>
     </View>
   );
 }
