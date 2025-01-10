@@ -4,9 +4,16 @@ import { apiClient } from "@/api";
 import { AxiosError, isAxiosError } from "axios";
 import { Pagination } from "@/interfaces/pagination";
 
-export async function listUsers(): Promise<ApiResponse<Pagination<User>>> {
+interface ListUserParams {
+  offset?: number;
+  limit?: number;
+}
+
+export async function listUsers(
+  params?: ListUserParams,
+): Promise<ApiResponse<Pagination<User>>> {
   const response = await apiClient
-    .get<ApiResponse<Pagination<User>>>("/users")
+    .get<ApiResponse<Pagination<User>>>("/users", { params: params })
     .catch((error: Error | AxiosError) => {
       if (isAxiosError(error)) {
         return error.response;
