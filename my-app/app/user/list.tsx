@@ -1,21 +1,14 @@
 import * as React from "react";
+import { usePagination } from "@/hooks/use-pagination";
 import { listUsers } from "@/api/user/list";
-import { User } from "@/interfaces/user";
 import { View, FlatList } from "react-native";
 import { UserInfoCard } from "@/components/user-info-card";
 
 export default function UserList() {
-  const [userList, setUserList] = React.useState<User[]>([]);
+  const { fetchedData: userList, fetchNextPage } = usePagination({
+    fetchRequest: listUsers,
+  });
 
-  React.useEffect(() => {
-    function fetchUsers() {
-      listUsers().then((response) => {
-        setUserList(response.data?.nodes ?? []);
-      });
-    }
-
-    fetchUsers();
-  }, []);
   return (
     <View
       style={{
@@ -29,6 +22,7 @@ export default function UserList() {
         }}
         contentContainerStyle={{ gap: 8 }}
         data={userList}
+        onEndReached={fetchNextPage}
       />
     </View>
   );
