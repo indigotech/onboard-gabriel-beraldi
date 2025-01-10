@@ -1,11 +1,13 @@
 import * as React from "react";
 import { Pressable, Text, View } from "react-native";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { LabeledField } from "@/components/labeled-field";
 import { validateEmail, validatePassword, storeData } from "@/utils";
 import { login } from "@/api/user/login";
 
 export default function Index() {
+  const router = useRouter();
+
   const [email, setEmail] = React.useState("");
   const [validEmail, setValidEmail] = React.useState(true);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
@@ -40,6 +42,7 @@ export default function Index() {
         if (response.data) {
           storeData("token", response.data.token);
           setLoginError("");
+          router.push("/user/list");
         } else {
           setLoginError(response.errors?.[0].message ?? "");
         }
@@ -82,7 +85,6 @@ export default function Index() {
         <Text>Entrar</Text>
       </Pressable>
       {loginError && <Text>{loginError}</Text>}
-      <Link href={"/user/list"}>próxima página</Link>
     </View>
   );
 }
