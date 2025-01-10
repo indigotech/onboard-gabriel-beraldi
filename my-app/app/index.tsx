@@ -28,28 +28,30 @@ export default function Index() {
   const [loginError, setLoginError] = React.useState("");
 
   function handleSubmit() {
-    const emailValidationResult = validateEmail(email);
+    if (!loadingLogin) {
+      const emailValidationResult = validateEmail(email);
 
-    setValidEmail(emailValidationResult.valid);
-    setEmailErrorMessage(emailValidationResult.errorMessage ?? "");
+      setValidEmail(emailValidationResult.valid);
+      setEmailErrorMessage(emailValidationResult.errorMessage ?? "");
 
-    const passwordValidationResult = validatePassword(password);
+      const passwordValidationResult = validatePassword(password);
 
-    setValidPassword(passwordValidationResult.valid);
-    setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
+      setValidPassword(passwordValidationResult.valid);
+      setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
 
-    if (emailValidationResult.valid && passwordValidationResult.valid) {
-      setLoadingLogin(true);
-      login(email, password).then((response) => {
-        setLoadingLogin(false);
-        if (response.data) {
-          storeData("token", response.data.token);
-          setLoginError("");
-          router.push("/user/list");
-        } else {
-          setLoginError(response.errors?.[0].message ?? "");
-        }
-      });
+      if (emailValidationResult.valid && passwordValidationResult.valid) {
+        setLoadingLogin(true);
+        login(email, password).then((response) => {
+          setLoadingLogin(false);
+          if (response.data) {
+            storeData("token", response.data.token);
+            setLoginError("");
+            router.push("/user/list");
+          } else {
+            setLoginError(response.errors?.[0].message ?? "");
+          }
+        });
+      }
     }
   }
 
