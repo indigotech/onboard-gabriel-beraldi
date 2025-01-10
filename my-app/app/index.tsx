@@ -2,8 +2,9 @@ import * as React from "react";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { LabeledField } from "@/components/labeled-field";
-import { validateEmail, validatePassword, storeData } from "@/utils";
+import { validateEmail, validatePassword } from "@/utils";
 import { login } from "@/api/user/login";
+import { authTokenProvider } from "@/utils/auth-token-provider";
 
 export default function Index() {
   const router = useRouter();
@@ -44,7 +45,7 @@ export default function Index() {
         login(email, password).then((response) => {
           setLoadingLogin(false);
           if (response.data) {
-            storeData("token", response.data.token);
+            authTokenProvider.setToken(response.data.token);
             setLoginError("");
             router.push("/user/list");
           } else {
