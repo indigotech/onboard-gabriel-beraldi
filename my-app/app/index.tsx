@@ -1,11 +1,9 @@
-import { login } from "@/api/user/login";
-import { LabeledField } from "@/components/labeled-field";
-import { storeData } from "@/utils/storage";
-import { validateEmail } from "@/utils/validate-email";
-import { validatePassword } from "@/utils/validate-password";
-import { Link } from "expo-router";
 import * as React from "react";
 import { Pressable, Text, View } from "react-native";
+import { Link } from "expo-router";
+import { LabeledField } from "@/components/labeled-field";
+import { validateEmail, validatePassword, storeData } from "@/utils";
+import { login } from "@/api/user/login";
 
 export default function Index() {
   const [email, setEmail] = React.useState("");
