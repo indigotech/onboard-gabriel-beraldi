@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { LabeledField } from "@/components/labeled-field";
 import { validateEmail, validatePassword, storeData } from "@/utils";
@@ -24,6 +24,7 @@ export default function Index() {
     setPassword(newPassword);
   }
 
+  const [loadingLogin, setLoadingLogin] = React.useState(false);
   const [loginError, setLoginError] = React.useState("");
 
   function handleSubmit() {
@@ -38,7 +39,9 @@ export default function Index() {
     setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
 
     if (emailValidationResult.valid && passwordValidationResult.valid) {
+      setLoadingLogin(true);
       login(email, password).then((response) => {
+        setLoadingLogin(false);
         if (response.data) {
           storeData("token", response.data.token);
           setLoginError("");
@@ -82,7 +85,7 @@ export default function Index() {
           backgroundColor: "#FFF",
         }}
       >
-        <Text>Entrar</Text>
+        {loadingLogin ? <ActivityIndicator /> : <Text>Entrar</Text>}
       </Pressable>
       {loginError && <Text>{loginError}</Text>}
     </View>
