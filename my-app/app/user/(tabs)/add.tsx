@@ -1,29 +1,98 @@
 import * as React from "react";
-import { usePagination } from "@/hooks/use-pagination";
-import { listUsers } from "@/api/user/list";
-import { View, FlatList } from "react-native";
-import { UserInfoCard } from "@/components/user-info-card";
+import { LabeledField } from "@/components/labeled-field";
+import { RadioGroup } from "@/components/radio-group";
+import DateTimePicker, {
+  DateTimePickerAndroid,
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+import {
+  ActivityIndicator,
+  Pressable,
+  View,
+  Text,
+  Platform,
+} from "react-native";
 
-export default function UserList() {
-  const { fetchedData: userList, fetchNextPage } = usePagination({
-    fetchRequest: listUsers,
-  });
+export default function AddUser() {
+  const [loadingCreate, setLoadingCreate] = React.useState(false);
+
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [phone, setPhone] = React.useState("");
+  const [birthdate, setBirthdate] = React.useState(new Date());
+  const [password, setPassword] = React.useState("");
+  const [role, setRole] = React.useState<"Administrador" | "Usuário">();
+
+  function handleBirthdateChange(_: DateTimePickerEvent, newDate?: Date) {
+    if (newDate) {
+      setBirthdate(newDate);
+    }
+  }
+
+  function handleSubmit() {}
 
   return (
     <View
       style={{
         flex: 1,
         padding: 16,
+        gap: 8,
       }}
     >
-      <FlatList
-        renderItem={(data) => {
-          return <UserInfoCard name={data.item.name} email={data.item.email} />;
-        }}
-        contentContainerStyle={{ gap: 8 }}
-        data={userList}
-        onEndReached={fetchNextPage}
+      <LabeledField label="Nome" onValueChange={setName} value={name} />
+      <LabeledField label="E-mail" onValueChange={setEmail} value={email} />
+      <LabeledField
+        label="Telefone"
+        onValueChange={setPhone}
+        value={phone}
+        inputMode="numeric"
       />
+      <Text>Data de Nascimento</Text>
+      {Platform.OS === "android" ? (
+        <Pressable
+          onPress={() =>
+            DateTimePickerAndroid.open({
+              value: birthdate,
+              mode: "date",
+              display: "spinner",
+              onChange: handleBirthdateChange,
+            })
+          }
+          style={{
+            backgroundColor: "#FFF",
+            padding: 12,
+          }}
+        >
+          <Text>{birthdate.toLocaleDateString()}</Text>
+        </Pressable>
+      ) : (
+        <DateTimePicker
+          onChange={handleBirthdateChange}
+          mode="date"
+          value={birthdate}
+        />
+      )}
+      <LabeledField
+        label="Senha"
+        onValueChange={setPassword}
+        value={password}
+      />
+      <RadioGroup
+        label="Permissão"
+        possibleValues={["Administrador", "Usuário"]}
+        chosenValue={role}
+        onValueSelected={setRole}
+      />
+      <Pressable
+        onPress={handleSubmit}
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#FFF",
+        }}
+      >
+        {loadingCreate ? <ActivityIndicator /> : <Text>Criar</Text>}
+      </Pressable>
     </View>
   );
 }

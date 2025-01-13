@@ -10,18 +10,18 @@ interface LabeledFieldProps {
   inputMode?: InputModeOptions;
 }
 
-export function LabeledField(props: LabeledFieldProps) {
+export function LabeledField({ valid = true, ...props }: LabeledFieldProps) {
   return (
     <View style={{ gap: 8 }}>
       <Text>{props.label}</Text>
       <TextInput
         onChangeText={props.onValueChange}
         value={props.value}
-        style={{ backgroundColor: props.valid ? "#FFF" : "#ffe8e8" }}
+        style={{ backgroundColor: valid ? "#FFF" : "#ffe8e8" }}
         inputMode={props.inputMode}
         autoCapitalize="none"
       />
-      {!props.valid && <Text>{props.invalidMessage}</Text>}
+      {!valid && <Text>{props.invalidMessage}</Text>}
     </View>
   );
 }
