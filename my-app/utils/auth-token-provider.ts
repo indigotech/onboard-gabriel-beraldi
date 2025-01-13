@@ -1,4 +1,4 @@
-import { getData, storeData } from "@/utils";
+import { getData, storeData } from "@/utils/storage";
 
 class AuthTokenProvider {
   private authToken: string | null = null;

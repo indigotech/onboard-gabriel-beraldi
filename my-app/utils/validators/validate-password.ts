@@ -1,7 +1,4 @@
-interface ValidationResult {
-  valid: boolean;
-  errorMessage?: string;
-}
+import { ValidationResult } from "@/interfaces/validation-result";
 
 const DIGIT_AND_LETTER_REGEX = /^(?=.*[A-Za-z])(?=.*\d).*$/gm;
 

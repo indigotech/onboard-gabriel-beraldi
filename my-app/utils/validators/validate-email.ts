@@ -1,7 +1,4 @@
-interface ValidationResult {
-  valid: boolean;
-  errorMessage?: string;
-}
+import { ValidationResult } from "@/interfaces/validation-result";
 
 const EMAIL_VALIDATION_REGEX = /^\w+(\.\w+)*@(\w+\.)+com(.br)?$/gm;
 
