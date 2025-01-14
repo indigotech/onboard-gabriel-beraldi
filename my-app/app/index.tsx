@@ -26,7 +26,7 @@ export default function Index() {
   const [loadingLogin, setLoadingLogin] = React.useState(false);
   const [loginError, setLoginError] = React.useState("");
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (loadingLogin) {
       return;
     }
@@ -37,18 +37,20 @@ export default function Index() {
     const passwordValidationResult = validatePassword(password);
     setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
 
-    if (emailValidationResult.valid && passwordValidationResult.valid) {
-      setLoadingLogin(true);
-      login(email, password).then((response) => {
-        setLoadingLogin(false);
-        if (response.data) {
-          authTokenProvider.setToken(response.data.token);
-          setLoginError("");
-          router.push("/user/list");
-        } else {
-          setLoginError(response.errors?.[0].message ?? "");
-        }
-      });
+    if (!emailValidationResult.valid || !passwordValidationResult.valid) {
+      return;
+    }
+
+    setLoadingLogin(true);
+    const response = await login(email, password);
+    setLoadingLogin(false);
+
+    if (response.data) {
+      authTokenProvider.setToken(response.data.token);
+      setLoginError("");
+      router.push("/user/list");
+    } else {
+      setLoginError(response.errors?.[0].message ?? "");
     }
   }
 

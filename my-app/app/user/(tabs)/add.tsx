@@ -19,11 +19,16 @@ import {
   validatePassword,
   validateBirthDate,
   PossibleRolesPt,
-  rolePtToEn
+  rolePtToEn,
 } from "@/utils";
+import { add } from "@/api/user/add";
+import { getDatePortion } from "@/utils/get-date-portion";
+import { useRouter } from "expo-router";
 
 export default function AddUser() {
+  const router = useRouter();
   const [loadingCreate, setLoadingCreate] = React.useState(false);
+  const [createError, setCreateError] = React.useState("");
 
   const [name, setName] = React.useState("");
   const [nameErrorMessage, setNameErrorMessage] = React.useState("");
@@ -49,7 +54,7 @@ export default function AddUser() {
     }
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (loadingCreate) {
       return;
     }
@@ -78,6 +83,24 @@ export default function AddUser() {
 
     if (!validForm) {
       return;
+    }
+
+    setLoadingCreate(true);
+    const response = await add({
+      name,
+      email,
+      phone,
+      birthDate: getDatePortion(birthDate),
+      password,
+      role: rolePtToEn(role),
+    });
+    setLoadingCreate(false);
+
+    if (response.data) {
+      setCreateError("");
+      router.push("/user/list");
+    } else {
+      setCreateError(response.errors?.[0].message ?? "");
     }
   }
 
@@ -157,6 +180,7 @@ export default function AddUser() {
       >
         {loadingCreate ? <ActivityIndicator /> : <Text>Criar</Text>}
       </Pressable>
+      {createError && <Text>{createError}</Text>}
     </View>
   );
 }
