@@ -30,29 +30,31 @@ export default function Index() {
 
   function handleSubmit() {
     if (!loadingLogin) {
-      const emailValidationResult = validateEmail(email);
+      return;
+    }
 
-      setValidEmail(emailValidationResult.valid);
-      setEmailErrorMessage(emailValidationResult.errorMessage ?? "");
+    const emailValidationResult = validateEmail(email);
 
-      const passwordValidationResult = validatePassword(password);
+    setValidEmail(emailValidationResult.valid);
+    setEmailErrorMessage(emailValidationResult.errorMessage ?? "");
 
-      setValidPassword(passwordValidationResult.valid);
-      setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
+    const passwordValidationResult = validatePassword(password);
 
-      if (emailValidationResult.valid && passwordValidationResult.valid) {
-        setLoadingLogin(true);
-        login(email, password).then((response) => {
-          setLoadingLogin(false);
-          if (response.data) {
-            authTokenProvider.setToken(response.data.token);
-            setLoginError("");
-            router.push("/user/list");
-          } else {
-            setLoginError(response.errors?.[0].message ?? "");
-          }
-        });
-      }
+    setValidPassword(passwordValidationResult.valid);
+    setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
+
+    if (emailValidationResult.valid && passwordValidationResult.valid) {
+      setLoadingLogin(true);
+      login(email, password).then((response) => {
+        setLoadingLogin(false);
+        if (response.data) {
+          authTokenProvider.setToken(response.data.token);
+          setLoginError("");
+          router.push("/user/list");
+        } else {
+          setLoginError(response.errors?.[0].message ?? "");
+        }
+      });
     }
   }
 
