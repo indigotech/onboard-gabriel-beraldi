@@ -9,7 +9,7 @@ export async function listUsers(
   params?: PaginatedRequest,
 ): Promise<ApiResponse<Pagination<User>>> {
   const response = await apiClient
-    .get<ApiResponse<Pagination<User>>>("/users", { params: params })
+    .get<ApiResponse<Pagination<User>>>("/users", { params })
     .catch((error: Error | AxiosError) => {
       if (isAxiosError(error)) {
         return error.response;

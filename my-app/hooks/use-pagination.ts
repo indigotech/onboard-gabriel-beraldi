@@ -11,8 +11,10 @@ interface PaginationOptions<T> {
   fetchFirstPage?: boolean;
 }
 
+const DEFAULT_PAGE_LIMIT = 20;
+
 export function usePagination<T>(options: PaginationOptions<T>) {
-  const [limit, setLimit] = React.useState(options.limit ?? 20);
+  const [limit, setLimit] = React.useState(options.limit ?? DEFAULT_PAGE_LIMIT);
   const [offset, setOffset] = React.useState(0);
   const [pagesEnded, setPagesEnded] = React.useState(false);
 
