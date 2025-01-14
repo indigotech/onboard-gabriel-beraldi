@@ -31,6 +31,15 @@ export function usePagination<T>(options: PaginationOptions<T>) {
     }
   }
 
+  function resetList() {
+    setFetchedData([]);
+    setOffset(0);
+    setPagesEnded(false);
+    if (options.fetchFirstPage !== false) {
+      return fetchNextPage();
+    }
+  }
+
   React.useEffect(() => {
     if (options.fetchFirstPage !== false) {
       fetchNextPage();
@@ -41,6 +50,7 @@ export function usePagination<T>(options: PaginationOptions<T>) {
     fetchedData,
     setPageSize: setLimit,
     fetchNextPage,
+    resetList,
     pagesEnded,
   };
 }

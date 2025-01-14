@@ -20,9 +20,9 @@ import {
   validateBirthDate,
   PossibleRolesPt,
   rolePtToEn,
+  getDatePortion,
 } from "@/utils";
 import { add } from "@/api/user/add";
-import { getDatePortion } from "@/utils/get-date-portion";
 import { useRouter } from "expo-router";
 
 export default function AddUser() {
@@ -52,6 +52,23 @@ export default function AddUser() {
     if (newDate) {
       setBirthDate(newDate);
     }
+  }
+
+  function resetForm() {
+    setLoadingCreate(false);
+    setCreateError("");
+    setName("");
+    setNameErrorMessage("");
+    setEmail("");
+    setEmailErrorMessage("");
+    setPhone("");
+    setPhoneErrorMessage("");
+    setBirthDate(new Date());
+    setBirthDateErrorMessage("");
+    setPassword("");
+    setPasswordErrorMessage("");
+    setRole(undefined);
+    setMissingRole(false);
   }
 
   async function handleSubmit() {
@@ -97,7 +114,7 @@ export default function AddUser() {
     setLoadingCreate(false);
 
     if (response.data) {
-      setCreateError("");
+      resetForm();
       router.push("/user/list");
     } else {
       setCreateError(response.errors?.[0].message ?? "");
