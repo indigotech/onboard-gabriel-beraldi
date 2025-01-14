@@ -2,21 +2,11 @@ import { User } from "@/interfaces/user";
 import { ApiResponse } from "@/interfaces/api-response";
 import { apiClient } from "@/api";
 import { AxiosError, isAxiosError } from "axios";
+import { Pagination } from "@/interfaces/pagination";
 
-interface LoginResult {
-  token: string;
-  user: User;
-}
-
-export async function login(
-  email: string,
-  password: string,
-): Promise<ApiResponse<LoginResult>> {
+export async function listUsers(): Promise<ApiResponse<Pagination<User>>> {
   const response = await apiClient
-    .post<ApiResponse<LoginResult>>("/authenticate", {
-      email,
-      password,
-    })
+    .get<ApiResponse<Pagination<User>>>("/users")
     .catch((error: Error | AxiosError) => {
       if (isAxiosError(error)) {
         return error.response;
