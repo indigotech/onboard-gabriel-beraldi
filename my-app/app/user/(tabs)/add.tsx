@@ -17,7 +17,9 @@ import {
   validateName,
   validatePhone,
   validatePassword,
-  validateBirthDate
+  validateBirthDate,
+  PossibleRolesPt,
+  rolePtToEn
 } from "@/utils";
 
 export default function AddUser() {
@@ -38,7 +40,7 @@ export default function AddUser() {
   const [password, setPassword] = React.useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
 
-  const [role, setRole] = React.useState<"Administrador" | "Usuário">();
+  const [role, setRole] = React.useState<PossibleRolesPt>();
   const [missingRole, setMissingRole] = React.useState(false);
 
   function handleBirthDateChange(_: DateTimePickerEvent, newDate?: Date) {
@@ -72,7 +74,7 @@ export default function AddUser() {
       phoneValidationResult?.valid &&
       passwordValidationResult?.valid &&
       birthDateValidationResult?.valid &&
-      !missingRole;
+      !isRoleMissing;
 
     if (!validForm) {
       return;
@@ -140,7 +142,7 @@ export default function AddUser() {
       />
       <RadioGroup
         label="Nível de Permissão:"
-        options={["Administrador", "Usuário"]}
+        options={[PossibleRolesPt.admin, PossibleRolesPt.user]}
         chosenValue={role}
         onValueSelected={setRole}
       />
