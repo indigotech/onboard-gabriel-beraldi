@@ -94,28 +94,28 @@ export default function AddUser() {
       }}
     >
       <LabeledField
-        label="Nome"
+        label="Nome Completo:"
         onValueChange={setName}
         value={name}
         valid={nameValidation?.valid}
         invalidMessage={nameValidation?.errorMessage}
       />
       <LabeledField
-        label="E-mail"
+        label="E-mail:"
         onValueChange={setEmail}
         value={email}
         valid={emailValidation?.valid}
         invalidMessage={emailValidation?.errorMessage}
       />
       <LabeledField
-        label="Telefone"
+        label="Telefone (com DDD):"
         onValueChange={setPhone}
         value={phone}
         inputMode="numeric"
         valid={phoneValidation?.valid}
         invalidMessage={phoneValidation?.errorMessage}
       />
-      <Text>Data de Nascimento</Text>
+      <Text>Data de Nascimento:</Text>
       {Platform.OS === "android" ? (
         <Pressable
           onPress={() =>
@@ -144,19 +144,19 @@ export default function AddUser() {
         <Text>{birthdateValidation.errorMessage}</Text>
       )}
       <LabeledField
-        label="Senha"
+        label="Senha:"
         onValueChange={setPassword}
         value={password}
         valid={passwordValidation?.valid}
         invalidMessage={passwordValidation?.errorMessage}
       />
       <RadioGroup
-        label="Permissão"
+        label="Nível de Permissão:"
         possibleValues={["Administrador", "Usuário"]}
         chosenValue={role}
         onValueSelected={setRole}
       />
-      {missingRole && <Text>Selecione um dos valores</Text>}
+      {missingRole && <Text>Selecione o nível de permissão desejada</Text>}
       <Pressable
         onPress={handleSubmit}
         style={{

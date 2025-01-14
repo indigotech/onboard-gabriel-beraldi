@@ -4,11 +4,11 @@ const NAME_VALIDATION_REGEX = /^[A-Za-z]+( [A-Za-z]+)+$/gm;
 
 export function validateName(name: string): ValidationResult {
   if (!name) {
-    return { valid: false, errorMessage: "Nome vazio." };
+    return { valid: false, errorMessage: "O nome é um campo obrigatório." };
   }
 
   if (!name.match(NAME_VALIDATION_REGEX)) {
-    return { valid: false, errorMessage: "Nome deve se completo." };
+    return { valid: false, errorMessage: "Preencha seu nome completo." };
   }
 
   return { valid: true };
