@@ -29,7 +29,7 @@ export default function Index() {
   const [loginError, setLoginError] = React.useState("");
 
   function handleSubmit() {
-    if (!loadingLogin) {
+    if (loadingLogin) {
       return;
     }
 
