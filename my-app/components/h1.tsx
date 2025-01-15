@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface TitleProps {
   size?: "large" | "normal";
-  weight?: `${number}px` | "bold" | "normal";
+  weight?: `${number}` | "bold" | "normal";
   color?: string;
   topMargin?: number;
   bottomMargin?: number;

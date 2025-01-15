@@ -1,5 +1,17 @@
 import * as React from "react";
-import { InputModeOptions, Text, TextInput, View } from "react-native";
+import styled from "styled-components";
+import { InputModeOptions, TextInput, View } from "react-native";
+import { Label } from "@/components/label";
+import { Caption } from "./caption";
+
+interface InputProps {
+  borderColor?: string;
+}
+
+const Input = styled(TextInput)<InputProps>`
+  border-bottom-width: 1px;
+  border-bottom-color: ${({ borderColor }) => borderColor ?? "#777777"};
+`;
 
 interface LabeledFieldProps {
   label: string;
@@ -10,17 +22,18 @@ interface LabeledFieldProps {
 }
 
 export function LabeledField(props: LabeledFieldProps) {
+  const valid = !props.invalidMessage;
   return (
-    <View style={{ gap: 8 }}>
-      <Text>{props.label}</Text>
-      <TextInput
+    <View>
+      <Label color={valid ? undefined : "#FF8080"}>{props.label}</Label>
+      <Input
+        borderColor={valid ? undefined : "#FF8080"}
         onChangeText={props.onValueChange}
         value={props.value}
-        style={{ backgroundColor: props.invalidMessage ? "#ffe8e8" : "#FFF" }}
         inputMode={props.inputMode}
         autoCapitalize="none"
       />
-      {props.invalidMessage && <Text>{props.invalidMessage}</Text>}
+      {props.invalidMessage && <Caption>{props.invalidMessage}</Caption>}
     </View>
   );
 }
