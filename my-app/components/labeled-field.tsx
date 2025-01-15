@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { InputModeOptions, TextInput, View } from "react-native";
 import { Label } from "@/components/label";
-import { Caption } from "./caption";
+import { Caption } from "@/components/caption";
 
 interface InputProps {
   borderColor?: string;

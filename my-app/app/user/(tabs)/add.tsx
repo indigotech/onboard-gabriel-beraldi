@@ -183,8 +183,10 @@ export default function AddUser() {
         options={[PossibleRolesPt.admin, PossibleRolesPt.user]}
         chosenValue={role}
         onValueSelected={setRole}
+        errorMessage={
+          missingRole ? "Selecione o nível de permissão desejada" : undefined
+        }
       />
-      {missingRole && <Text>Selecione o nível de permissão desejada</Text>}
       <Button label="Criar" loading={loadingCreate} onClick={handleSubmit} />
       {createError && <Text>{createError}</Text>}
     </SafeAreaView>

@@ -1,6 +1,13 @@
 import * as React from "react";
+import styled from "styled-components";
 import { View, Text } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { Label } from "@/components/label";
+import { Caption } from "@/components/caption";
+
+const OptionsContainer = styled(View)`
+  gap: 8px;
+`;
 
 interface RadioOptionProps<T> {
   value: T;
@@ -33,22 +40,27 @@ interface RadioGroupProps<T extends string | number> {
   options: T[];
   chosenValue?: NoInfer<T>;
   onValueSelected: (newValue: NoInfer<T>) => void;
+  errorMessage?: string;
 }
 
 export function RadioGroup<const T extends string | number>(
   props: RadioGroupProps<T>,
 ) {
+  const valid = !props.errorMessage;
   return (
-    <View style={{ gap: 8 }}>
-      <Text>{props.label}</Text>
-      {props.options.map((value: T) => (
-        <RadioOption
-          key={value}
-          value={value}
-          selected={value === props.chosenValue}
-          onSelected={(thisValue: T) => props.onValueSelected(thisValue)}
-        />
-      ))}
+    <View>
+      <Label color={valid ? undefined : "#FF8080"}>{props.label}</Label>
+      <OptionsContainer>
+        {props.options.map((value: T) => (
+          <RadioOption
+            key={value}
+            value={value}
+            selected={value === props.chosenValue}
+            onSelected={(thisValue: T) => props.onValueSelected(thisValue)}
+          />
+        ))}
+      </OptionsContainer>
+      {props.errorMessage && <Caption>{props.errorMessage}</Caption>}
     </View>
   );
 }
