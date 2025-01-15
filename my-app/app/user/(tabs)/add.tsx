@@ -7,7 +7,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ActivityIndicator, Pressable, Text, Platform } from "react-native";
+import { Pressable, Text, Platform } from "react-native";
 import {
   validateEmail,
   validateName,
@@ -20,6 +20,7 @@ import {
 } from "@/utils";
 import { addUser } from "@/api/user/add-user";
 import { useRouter } from "expo-router";
+import { Button } from "@/components/button";
 
 export default function AddUser() {
   const router = useRouter();
@@ -184,16 +185,7 @@ export default function AddUser() {
         onValueSelected={setRole}
       />
       {missingRole && <Text>Selecione o nível de permissão desejada</Text>}
-      <Pressable
-        onPress={handleSubmit}
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#FFF",
-        }}
-      >
-        {loadingCreate ? <ActivityIndicator /> : <Text>Criar</Text>}
-      </Pressable>
+      <Button label="Criar" loading={loadingCreate} onClick={handleSubmit} />
       {createError && <Text>{createError}</Text>}
     </SafeAreaView>
   );
