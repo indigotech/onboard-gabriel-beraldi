@@ -2,12 +2,8 @@ import * as React from "react";
 import { LabeledField } from "@/components/labeled-field";
 import { RadioGroup } from "@/components/radio-group";
 import { H1 } from "@/components/h1";
-import DateTimePicker, {
-  DateTimePickerAndroid,
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Pressable, Text, Platform } from "react-native";
+import { Text } from "react-native";
 import {
   validateEmail,
   validateName,
@@ -21,6 +17,7 @@ import {
 import { addUser } from "@/api/user/add-user";
 import { useRouter } from "expo-router";
 import { Button } from "@/components/button";
+import { DatePicker } from "@/components/date-picker";
 
 export default function AddUser() {
   const router = useRouter();
@@ -45,7 +42,7 @@ export default function AddUser() {
   const [role, setRole] = React.useState<PossibleRolesPt>();
   const [missingRole, setMissingRole] = React.useState(false);
 
-  function handleBirthDateChange(_: DateTimePickerEvent, newDate?: Date) {
+  function handleBirthDateChange(newDate?: Date) {
     if (newDate) {
       setBirthDate(newDate);
     }
@@ -146,32 +143,12 @@ export default function AddUser() {
         inputMode="numeric"
         invalidMessage={phoneErrorMessage}
       />
-      <Text>Data de Nascimento:</Text>
-      {Platform.OS === "android" ? (
-        <Pressable
-          onPress={() =>
-            DateTimePickerAndroid.open({
-              value: birthDate,
-              mode: "date",
-              display: "spinner",
-              onChange: handleBirthDateChange,
-            })
-          }
-          style={{
-            backgroundColor: "#FFF",
-            padding: 12,
-          }}
-        >
-          <Text>{birthDate.toLocaleDateString()}</Text>
-        </Pressable>
-      ) : (
-        <DateTimePicker
-          onChange={handleBirthDateChange}
-          mode="date"
-          value={birthDate}
-        />
-      )}
-      {birthDateErrorMessage && <Text>{birthDateErrorMessage}</Text>}
+      <DatePicker
+        label="Data de Nascimento:"
+        value={birthDate}
+        onValueChange={handleBirthDateChange}
+        invalidMessage={birthDateErrorMessage}
+      />
       <LabeledField
         label="Senha:"
         onValueChange={setPassword}
