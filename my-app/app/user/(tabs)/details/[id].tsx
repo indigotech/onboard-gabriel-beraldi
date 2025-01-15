@@ -1,17 +1,24 @@
 import * as React from "react";
 import { View, Text } from "react-native";
 import { User } from "@/interfaces/user";
-import { PossibleRolesEn, roleEnToPt } from "@/utils";
+import { roleEnToPt } from "@/utils";
+import { detailUser } from "@/api/user/detail";
+import { useLocalSearchParams } from "expo-router";
 
 export default function UserDetails() {
-  const user: User = {
-    id: "1",
-    name: "nome completo",
-    email: "exemplo@exemplo.com",
-    birthDate: "2020-01-01",
-    phone: "11987654321",
-    role: PossibleRolesEn.admin,
-  };
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const [user, setUser] = React.useState<User>();
+
+  React.useEffect(() => {
+    async function fetchUserDetails() {
+      const response = await detailUser(id);
+      if (response.data) {
+        setUser(response.data);
+      }
+    }
+
+    fetchUserDetails();
+  }, [id]);
 
   return (
     <View
@@ -21,21 +28,24 @@ export default function UserDetails() {
       }}
     >
       <Text>
-        <Text style={{ fontWeight: "bold" }}>Nome Completo:</Text> {user.name}
+        <Text style={{ fontWeight: "bold" }}>Nome Completo:</Text>{" "}
+        {user?.name ?? "Não Informado"}
       </Text>
       <Text>
-        <Text style={{ fontWeight: "bold" }}>E-Mail:</Text> {user.email}
+        <Text style={{ fontWeight: "bold" }}>E-Mail:</Text>{" "}
+        {user?.email ?? "Não Informado"}
       </Text>
       <Text>
-        <Text style={{ fontWeight: "bold" }}>Telefone:</Text> {user.phone}
+        <Text style={{ fontWeight: "bold" }}>Telefone:</Text>{" "}
+        {user?.phone ?? "Não Informado"}
       </Text>
       <Text>
         <Text style={{ fontWeight: "bold" }}>Data de nascimento:</Text>{" "}
-        {user.birthDate}
+        {user?.birthDate ?? "Não Informado"}
       </Text>
       <Text>
         <Text style={{ fontWeight: "bold" }}>Nível de perissão:</Text>{" "}
-        {roleEnToPt(user.role)}
+        {user?.role ? roleEnToPt(user.role) : "Não Informado"}
       </Text>
     </View>
   );

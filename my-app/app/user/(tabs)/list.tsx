@@ -25,7 +25,13 @@ export default function UserList() {
     >
       <FlatList
         renderItem={(data) => {
-          return <UserInfoCard name={data.item.name} email={data.item.email} />;
+          return (
+            <UserInfoCard
+              id={data.item.id}
+              name={data.item.name}
+              email={data.item.email}
+            />
+          );
         }}
         contentContainerStyle={{ gap: 8 }}
         data={userList}

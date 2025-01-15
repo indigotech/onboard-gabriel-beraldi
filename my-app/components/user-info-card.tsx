@@ -1,14 +1,26 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { Text, Pressable } from "react-native";
+import { useRouter } from "expo-router";
 
 interface UserInfoCardProps {
+  id: string;
   name: string;
   email: string;
 }
 
 export function UserInfoCard(props: UserInfoCardProps) {
+  const router = useRouter();
+
+  function handlePress() {
+    router.push({
+      pathname: "/user/(tabs)/details/[id]",
+      params: { id: props.id },
+    });
+  }
+
   return (
-    <View
+    <Pressable
+      onPress={handlePress}
       style={{
         padding: 8,
         borderWidth: 1,
@@ -17,6 +29,6 @@ export function UserInfoCard(props: UserInfoCardProps) {
     >
       <Text>{`\u2022 Nome: ${props.name}`}</Text>
       <Text>{`\u2022 Email: ${props.email}`}</Text>
-    </View>
+    </Pressable>
   );
 }
