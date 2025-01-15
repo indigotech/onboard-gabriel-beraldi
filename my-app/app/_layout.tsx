@@ -3,12 +3,9 @@ import { Stack } from "expo-router";
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{ title: "Bem-Vindo(a) à Taqtile" }}
-      />
-      <Stack.Screen name="user/(tabs)" options={{ headerShown: false }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="user/(tabs)" />
     </Stack>
   );
 }

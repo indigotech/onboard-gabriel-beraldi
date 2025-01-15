@@ -1,5 +1,7 @@
 import * as React from "react";
 import { View, Text, ActivityIndicator } from "react-native";
+import { H1 } from "@/components/h1";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { User } from "@/interfaces/user";
 import { roleEnToPt } from "@/utils";
 import { getUserDetails } from "@/api/user/get-user-details";
@@ -39,7 +41,7 @@ export default function UserDetails() {
       <ActivityIndicator size={"large"} />
     </View>
   ) : (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         padding: 16,
@@ -49,6 +51,7 @@ export default function UserDetails() {
         <Text>{errorMessage}</Text>
       ) : (
         <>
+          <H1>Detalhes do Usuário</H1>
           <Text>
             <Text style={{ fontWeight: "bold" }}>Nome Completo:</Text>{" "}
             {user?.name ?? "Não Informado"}
@@ -71,6 +74,6 @@ export default function UserDetails() {
           </Text>
         </>
       )}
-    </View>
+    </SafeAreaView>
   );
 }

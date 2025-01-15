@@ -1,17 +1,13 @@
 import * as React from "react";
 import { LabeledField } from "@/components/labeled-field";
 import { RadioGroup } from "@/components/radio-group";
+import { H1 } from "@/components/h1";
 import DateTimePicker, {
   DateTimePickerAndroid,
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import {
-  ActivityIndicator,
-  Pressable,
-  View,
-  Text,
-  Platform,
-} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ActivityIndicator, Pressable, Text, Platform } from "react-native";
 import {
   validateEmail,
   validateName,
@@ -122,13 +118,14 @@ export default function AddUser() {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         padding: 16,
         gap: 8,
       }}
     >
+      <H1>Adicione um Usuário</H1>
       <LabeledField
         label="Nome Completo:"
         onValueChange={setName}
@@ -198,6 +195,6 @@ export default function AddUser() {
         {loadingCreate ? <ActivityIndicator /> : <Text>Criar</Text>}
       </Pressable>
       {createError && <Text>{createError}</Text>}
-    </View>
+    </SafeAreaView>
   );
 }
