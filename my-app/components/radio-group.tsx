@@ -30,7 +30,7 @@ function RadioOption<const T extends string | number>(
 
 interface RadioGroupProps<T extends string | number> {
   label: string;
-  possibleValues: T[];
+  options: T[];
   chosenValue?: NoInfer<T>;
   onValueSelected: (newValue: NoInfer<T>) => void;
 }
@@ -41,7 +41,7 @@ export function RadioGroup<const T extends string | number>(
   return (
     <View style={{ gap: 8 }}>
       <Text>{props.label}</Text>
-      {props.possibleValues.map((value: T) => (
+      {props.options.map((value: T) => (
         <RadioOption
           key={value}
           value={value}

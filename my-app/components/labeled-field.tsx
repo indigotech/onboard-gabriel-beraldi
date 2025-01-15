@@ -5,23 +5,22 @@ interface LabeledFieldProps {
   label: string;
   value: string;
   onValueChange: (newValue: string) => void;
-  valid?: boolean;
   invalidMessage?: string;
   inputMode?: InputModeOptions;
 }
 
-export function LabeledField({ valid = true, ...props }: LabeledFieldProps) {
+export function LabeledField(props: LabeledFieldProps) {
   return (
     <View style={{ gap: 8 }}>
       <Text>{props.label}</Text>
       <TextInput
         onChangeText={props.onValueChange}
         value={props.value}
-        style={{ backgroundColor: valid ? "#FFF" : "#ffe8e8" }}
+        style={{ backgroundColor: props.invalidMessage ? "#ffe8e8" : "#FFF" }}
         inputMode={props.inputMode}
         autoCapitalize="none"
       />
-      {!valid && <Text>{props.invalidMessage}</Text>}
+      {props.invalidMessage && <Text>{props.invalidMessage}</Text>}
     </View>
   );
 }

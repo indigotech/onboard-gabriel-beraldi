@@ -12,7 +12,6 @@ import {
   Text,
   Platform,
 } from "react-native";
-import { ValidationResult } from "@/interfaces/validation-result";
 import {
   validateEmail,
   validateName,
@@ -25,24 +24,19 @@ export default function AddUser() {
   const [loadingCreate, setLoadingCreate] = React.useState(false);
 
   const [name, setName] = React.useState("");
-  const [nameValidation, setNameValidation] =
-    React.useState<ValidationResult>();
+  const [nameErrorMessage, setNameErrorMessage] = React.useState("");
 
   const [email, setEmail] = React.useState("");
-  const [emailValidation, setEmailValidation] =
-    React.useState<ValidationResult>();
+  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
 
   const [phone, setPhone] = React.useState("");
-  const [phoneValidation, setPhoneValidation] =
-    React.useState<ValidationResult>();
+  const [phoneErrorMessage, setPhoneErrorMessage] = React.useState("");
 
   const [birthdate, setBirthdate] = React.useState(new Date());
-  const [birthdateValidation, setBirthdateValidation] =
-    React.useState<ValidationResult>();
+  const [birthdateErrorMessage, setBirthdateErrorMessage] = React.useState("");
 
   const [password, setPassword] = React.useState("");
-  const [passwordValidation, setPasswordValidation] =
-    React.useState<ValidationResult>();
+  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
 
   const [role, setRole] = React.useState<"Administrador" | "Usuário">();
   const [missingRole, setMissingRole] = React.useState(false);
@@ -65,11 +59,11 @@ export default function AddUser() {
     const birthdateValidationResult = validateBirthdate(birthdate);
     const isRoleMissing = role === undefined;
 
-    setEmailValidation(emailValidationResult);
-    setNameValidation(nameValidationResult);
-    setPhoneValidation(phoneValidationResult);
-    setPasswordValidation(passwordValidationResult);
-    setBirthdateValidation(birthdateValidationResult);
+    setEmailErrorMessage(emailValidationResult.errorMessage ?? "");
+    setNameErrorMessage(nameValidationResult.errorMessage ?? "");
+    setPhoneErrorMessage(phoneValidationResult.errorMessage ?? "");
+    setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
+    setBirthdateErrorMessage(birthdateValidationResult.errorMessage ?? "");
     setMissingRole(isRoleMissing);
 
     const validForm =
@@ -97,23 +91,20 @@ export default function AddUser() {
         label="Nome Completo:"
         onValueChange={setName}
         value={name}
-        valid={nameValidation?.valid}
-        invalidMessage={nameValidation?.errorMessage}
+        invalidMessage={nameErrorMessage}
       />
       <LabeledField
         label="E-mail:"
         onValueChange={setEmail}
         value={email}
-        valid={emailValidation?.valid}
-        invalidMessage={emailValidation?.errorMessage}
+        invalidMessage={emailErrorMessage}
       />
       <LabeledField
         label="Telefone (com DDD):"
         onValueChange={setPhone}
         value={phone}
         inputMode="numeric"
-        valid={phoneValidation?.valid}
-        invalidMessage={phoneValidation?.errorMessage}
+        invalidMessage={phoneErrorMessage}
       />
       <Text>Data de Nascimento:</Text>
       {Platform.OS === "android" ? (
@@ -140,19 +131,16 @@ export default function AddUser() {
           value={birthdate}
         />
       )}
-      {birthdateValidation?.valid === false && (
-        <Text>{birthdateValidation.errorMessage}</Text>
-      )}
+      {birthdateErrorMessage && <Text>{birthdateErrorMessage}</Text>}
       <LabeledField
         label="Senha:"
         onValueChange={setPassword}
         value={password}
-        valid={passwordValidation?.valid}
-        invalidMessage={passwordValidation?.errorMessage}
+        invalidMessage={passwordErrorMessage}
       />
       <RadioGroup
         label="Nível de Permissão:"
-        possibleValues={["Administrador", "Usuário"]}
+        options={["Administrador", "Usuário"]}
         chosenValue={role}
         onValueSelected={setRole}
       />
