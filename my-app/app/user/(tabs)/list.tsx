@@ -14,11 +14,8 @@ export default function UserList() {
     fetchRequest: listUsers,
   });
 
-  useFocusEffect(
-    React.useCallback(() => {
-      resetList();
-    }, []),
-  );
+  useFocusEffect(resetList);
+
   return (
     <View
       style={{
