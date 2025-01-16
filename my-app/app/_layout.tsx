@@ -8,7 +8,7 @@ export default function RootLayout() {
         name="index"
         options={{ title: "Bem-Vindo(a) à Taqtile" }}
       />
-      <Stack.Screen name="user/list" options={{ title: "Lista de Usuários" }} />
+      <Stack.Screen name="user/(tabs)" options={{ headerShown: false }} />
     </Stack>
   );
 }

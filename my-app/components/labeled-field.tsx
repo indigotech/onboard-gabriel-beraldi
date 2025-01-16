@@ -5,7 +5,6 @@ interface LabeledFieldProps {
   label: string;
   value: string;
   onValueChange: (newValue: string) => void;
-  valid?: boolean;
   invalidMessage?: string;
   inputMode?: InputModeOptions;
 }
@@ -17,11 +16,11 @@ export function LabeledField(props: LabeledFieldProps) {
       <TextInput
         onChangeText={props.onValueChange}
         value={props.value}
-        style={{ backgroundColor: props.valid ? "#FFF" : "#ffe8e8" }}
+        style={{ backgroundColor: props.invalidMessage ? "#ffe8e8" : "#FFF" }}
         inputMode={props.inputMode}
         autoCapitalize="none"
       />
-      {!props.valid && <Text>{props.invalidMessage}</Text>}
+      {props.invalidMessage && <Text>{props.invalidMessage}</Text>}
     </View>
   );
 }

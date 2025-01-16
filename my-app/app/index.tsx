@@ -10,7 +10,6 @@ export default function Index() {
   const router = useRouter();
 
   const [email, setEmail] = React.useState("");
-  const [validEmail, setValidEmail] = React.useState(true);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
 
   function handleEmailChange(newEmail: string) {
@@ -18,7 +17,6 @@ export default function Index() {
   }
 
   const [password, setPassword] = React.useState("");
-  const [validPassword, setValidPassword] = React.useState(true);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
 
   function handlePasswordChange(newPassword: string) {
@@ -29,18 +27,14 @@ export default function Index() {
   const [loginError, setLoginError] = React.useState("");
 
   function handleSubmit() {
-    if (!loadingLogin) {
+    if (loadingLogin) {
       return;
     }
 
     const emailValidationResult = validateEmail(email);
-
-    setValidEmail(emailValidationResult.valid);
     setEmailErrorMessage(emailValidationResult.errorMessage ?? "");
 
     const passwordValidationResult = validatePassword(password);
-
-    setValidPassword(passwordValidationResult.valid);
     setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
 
     if (emailValidationResult.valid && passwordValidationResult.valid) {
@@ -70,7 +64,6 @@ export default function Index() {
         label="Email:"
         value={email}
         onValueChange={handleEmailChange}
-        valid={validEmail}
         invalidMessage={emailErrorMessage}
         inputMode="email"
       />
@@ -78,7 +71,6 @@ export default function Index() {
         label="Senha:"
         value={password}
         onValueChange={handlePasswordChange}
-        valid={validPassword}
         invalidMessage={passwordErrorMessage}
         inputMode="text"
       />
