@@ -2,10 +2,22 @@ import { User } from "@/interfaces/user";
 import { ApiResponse } from "@/interfaces/api-response";
 import { apiClient } from "@/api";
 import { AxiosError, isAxiosError } from "axios";
+import { PossibleRolesEn } from "@/utils";
 
-export async function detailUser(id: string): Promise<ApiResponse<User>> {
+interface AddUserRequest {
+  name: string;
+  email: string;
+  phone: string;
+  birthDate: string;
+  password: string;
+  role: PossibleRolesEn;
+}
+
+export async function addUser(
+  request: AddUserRequest,
+): Promise<ApiResponse<User>> {
   const response = await apiClient
-    .get<ApiResponse<User>>(`/users/${id}`)
+    .post<ApiResponse<User>>("/users", request)
     .catch((error: Error | AxiosError) => {
       if (isAxiosError(error)) {
         return error.response;

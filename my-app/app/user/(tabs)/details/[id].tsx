@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, Text, ActivityIndicator } from "react-native";
 import { User } from "@/interfaces/user";
 import { roleEnToPt } from "@/utils";
-import { detailUser } from "@/api/user/detail";
+import { getUserDetails } from "@/api/user/get-user-details";
 import { useLocalSearchParams } from "expo-router";
 
 export default function UserDetails() {
@@ -15,7 +15,7 @@ export default function UserDetails() {
   React.useEffect(() => {
     async function fetchUserDetails() {
       setLoading(true);
-      const response = await detailUser(id);
+      const response = await getUserDetails(id);
       setLoading(false);
       if (response.data) {
         setUser(response.data);

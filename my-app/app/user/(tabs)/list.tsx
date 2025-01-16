@@ -1,6 +1,6 @@
 import * as React from "react";
 import { usePagination } from "@/hooks/use-pagination";
-import { listUsers } from "@/api/user/list";
+import { listUsers } from "@/api/user/list-users";
 import { View, FlatList } from "react-native";
 import { UserInfoCard } from "@/components/user-info-card";
 import { useFocusEffect } from "expo-router";
