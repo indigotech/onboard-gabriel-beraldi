@@ -1,4 +1,4 @@
-export * from "./validate-birthdate";
+export * from "./validate-birth-date";
 export * from "./validate-email";
 export * from "./validate-name";
 export * from "./validate-password";

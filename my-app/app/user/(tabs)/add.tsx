@@ -17,11 +17,18 @@ import {
   validateName,
   validatePhone,
   validatePassword,
-  validateBirthdate,
+  validateBirthDate,
+  PossibleRolesPt,
+  rolePtToEn,
+  getDatePortion,
 } from "@/utils";
+import { add } from "@/api/user/add";
+import { useRouter } from "expo-router";
 
 export default function AddUser() {
+  const router = useRouter();
   const [loadingCreate, setLoadingCreate] = React.useState(false);
+  const [createError, setCreateError] = React.useState("");
 
   const [name, setName] = React.useState("");
   const [nameErrorMessage, setNameErrorMessage] = React.useState("");
@@ -32,22 +39,39 @@ export default function AddUser() {
   const [phone, setPhone] = React.useState("");
   const [phoneErrorMessage, setPhoneErrorMessage] = React.useState("");
 
-  const [birthdate, setBirthdate] = React.useState(new Date());
-  const [birthdateErrorMessage, setBirthdateErrorMessage] = React.useState("");
+  const [birthDate, setBirthDate] = React.useState(new Date());
+  const [birthDateErrorMessage, setBirthDateErrorMessage] = React.useState("");
 
   const [password, setPassword] = React.useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
 
-  const [role, setRole] = React.useState<"Administrador" | "Usuário">();
+  const [role, setRole] = React.useState<PossibleRolesPt>();
   const [missingRole, setMissingRole] = React.useState(false);
 
-  function handleBirthdateChange(_: DateTimePickerEvent, newDate?: Date) {
+  function handleBirthDateChange(_: DateTimePickerEvent, newDate?: Date) {
     if (newDate) {
-      setBirthdate(newDate);
+      setBirthDate(newDate);
     }
   }
 
-  function handleSubmit() {
+  function resetForm() {
+    setLoadingCreate(false);
+    setCreateError("");
+    setName("");
+    setNameErrorMessage("");
+    setEmail("");
+    setEmailErrorMessage("");
+    setPhone("");
+    setPhoneErrorMessage("");
+    setBirthDate(new Date());
+    setBirthDateErrorMessage("");
+    setPassword("");
+    setPasswordErrorMessage("");
+    setRole(undefined);
+    setMissingRole(false);
+  }
+
+  async function handleSubmit() {
     if (loadingCreate) {
       return;
     }
@@ -56,14 +80,14 @@ export default function AddUser() {
     const nameValidationResult = validateName(name);
     const phoneValidationResult = validatePhone(phone);
     const passwordValidationResult = validatePassword(password);
-    const birthdateValidationResult = validateBirthdate(birthdate);
+    const birthDateValidationResult = validateBirthDate(birthDate);
     const isRoleMissing = role === undefined;
 
     setEmailErrorMessage(emailValidationResult.errorMessage ?? "");
     setNameErrorMessage(nameValidationResult.errorMessage ?? "");
     setPhoneErrorMessage(phoneValidationResult.errorMessage ?? "");
     setPasswordErrorMessage(passwordValidationResult.errorMessage ?? "");
-    setBirthdateErrorMessage(birthdateValidationResult.errorMessage ?? "");
+    setBirthDateErrorMessage(birthDateValidationResult.errorMessage ?? "");
     setMissingRole(isRoleMissing);
 
     const validForm =
@@ -71,11 +95,29 @@ export default function AddUser() {
       nameValidationResult?.valid &&
       phoneValidationResult?.valid &&
       passwordValidationResult?.valid &&
-      birthdateValidationResult?.valid &&
-      !missingRole;
+      birthDateValidationResult?.valid &&
+      !isRoleMissing;
 
     if (!validForm) {
       return;
+    }
+
+    setLoadingCreate(true);
+    const response = await add({
+      name,
+      email,
+      phone,
+      birthDate: getDatePortion(birthDate),
+      password,
+      role: rolePtToEn(role),
+    });
+    setLoadingCreate(false);
+
+    if (response.data) {
+      resetForm();
+      router.push("/user/list");
+    } else {
+      setCreateError(response.errors?.[0].message ?? "");
     }
   }
 
@@ -111,10 +153,10 @@ export default function AddUser() {
         <Pressable
           onPress={() =>
             DateTimePickerAndroid.open({
-              value: birthdate,
+              value: birthDate,
               mode: "date",
               display: "spinner",
-              onChange: handleBirthdateChange,
+              onChange: handleBirthDateChange,
             })
           }
           style={{
@@ -122,16 +164,16 @@ export default function AddUser() {
             padding: 12,
           }}
         >
-          <Text>{birthdate.toLocaleDateString()}</Text>
+          <Text>{birthDate.toLocaleDateString()}</Text>
         </Pressable>
       ) : (
         <DateTimePicker
-          onChange={handleBirthdateChange}
+          onChange={handleBirthDateChange}
           mode="date"
-          value={birthdate}
+          value={birthDate}
         />
       )}
-      {birthdateErrorMessage && <Text>{birthdateErrorMessage}</Text>}
+      {birthDateErrorMessage && <Text>{birthDateErrorMessage}</Text>}
       <LabeledField
         label="Senha:"
         onValueChange={setPassword}
@@ -140,7 +182,7 @@ export default function AddUser() {
       />
       <RadioGroup
         label="Nível de Permissão:"
-        options={["Administrador", "Usuário"]}
+        options={[PossibleRolesPt.admin, PossibleRolesPt.user]}
         chosenValue={role}
         onValueSelected={setRole}
       />
@@ -155,6 +197,7 @@ export default function AddUser() {
       >
         {loadingCreate ? <ActivityIndicator /> : <Text>Criar</Text>}
       </Pressable>
+      {createError && <Text>{createError}</Text>}
     </View>
   );
 }
