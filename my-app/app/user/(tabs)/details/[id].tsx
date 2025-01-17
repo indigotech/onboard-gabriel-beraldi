@@ -69,7 +69,7 @@ export default function UserDetails() {
             {user?.birthDate ?? "Não Informado"}
           </Text>
           <Text>
-            <Text style={{ fontWeight: "bold" }}>Nível de perissão:</Text>{" "}
+            <Text style={{ fontWeight: "bold" }}>Nível de permissão:</Text>{" "}
             {user?.role ? roleEnToPt(user.role) : "Não Informado"}
           </Text>
         </>

@@ -40,6 +40,7 @@ export function DatePicker(props: DatePickerProps) {
           onChange={(_, newDate) => props.onValueChange(newDate)}
           mode="date"
           value={props.value}
+          style={{ paddingHorizontal: 20, left: -20, marginLeft: -10 }}
         />
       )}
       {props.invalidMessage && <Caption>{props.invalidMessage}</Caption>}
