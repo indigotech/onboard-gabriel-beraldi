@@ -1,7 +1,7 @@
 import { User } from "@/interfaces/user";
 import { ApiResponse } from "@/interfaces/api-response";
 import { apiClient } from "@/api";
-import { AxiosError, isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { PossibleRolesEn } from "@/utils";
 
 interface AddUserRequest {
@@ -16,14 +16,15 @@ interface AddUserRequest {
 export async function addUser(
   request: AddUserRequest,
 ): Promise<ApiResponse<User>> {
-  const response = await apiClient
-    .post<ApiResponse<User>>("/users", request)
-    .catch((error: Error | AxiosError) => {
-      if (isAxiosError(error)) {
-        return error.response;
-      } else {
-        throw error;
-      }
-    });
-  return response?.data;
+  try {
+    const response = await apiClient.post<ApiResponse<User>>("/users", request);
+
+    return response.data;
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return error.response?.data;
+    } else {
+      throw error;
+    }
+  }
 }

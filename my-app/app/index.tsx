@@ -1,10 +1,13 @@
 import * as React from "react";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
-import { useRouter } from "expo-router";
+import { Text } from "react-native";
 import { LabeledField } from "@/components/labeled-field";
+import { H1 } from "@/components/h1";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 import { validateEmail, validatePassword } from "@/utils";
 import { login } from "@/api/user/login";
 import { authTokenProvider } from "@/utils/auth-token-provider";
+import { Button } from "@/components/button";
 
 export default function Index() {
   const router = useRouter();
@@ -55,13 +58,14 @@ export default function Index() {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         padding: 16,
         gap: 8,
       }}
     >
+      <H1>Bem-Vindo(a) à Taqtile</H1>
       <LabeledField
         label="Email:"
         value={email}
@@ -76,17 +80,8 @@ export default function Index() {
         invalidMessage={passwordErrorMessage}
         inputMode="text"
       />
-      <Pressable
-        onPress={handleSubmit}
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#FFF",
-        }}
-      >
-        {loadingLogin ? <ActivityIndicator /> : <Text>Entrar</Text>}
-      </Pressable>
+      <Button label="Entrar" loading={loadingLogin} onClick={handleSubmit} />
       {loginError && <Text>{loginError}</Text>}
-    </View>
+    </SafeAreaView>
   );
 }

@@ -1,17 +1,9 @@
 import * as React from "react";
 import { LabeledField } from "@/components/labeled-field";
 import { RadioGroup } from "@/components/radio-group";
-import DateTimePicker, {
-  DateTimePickerAndroid,
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
-import {
-  ActivityIndicator,
-  Pressable,
-  View,
-  Text,
-  Platform,
-} from "react-native";
+import { H1 } from "@/components/h1";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "react-native";
 import {
   validateEmail,
   validateName,
@@ -24,6 +16,8 @@ import {
 } from "@/utils";
 import { addUser } from "@/api/user/add-user";
 import { useRouter } from "expo-router";
+import { Button } from "@/components/button";
+import { DatePicker } from "@/components/date-picker";
 
 export default function AddUser() {
   const router = useRouter();
@@ -48,7 +42,7 @@ export default function AddUser() {
   const [role, setRole] = React.useState<PossibleRolesPt>();
   const [missingRole, setMissingRole] = React.useState(false);
 
-  function handleBirthDateChange(_: DateTimePickerEvent, newDate?: Date) {
+  function handleBirthDateChange(newDate?: Date) {
     if (newDate) {
       setBirthDate(newDate);
     }
@@ -122,13 +116,14 @@ export default function AddUser() {
   }
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         padding: 16,
         gap: 8,
       }}
     >
+      <H1>Adicione um Usuário</H1>
       <LabeledField
         label="Nome Completo:"
         onValueChange={setName}
@@ -148,32 +143,12 @@ export default function AddUser() {
         inputMode="numeric"
         invalidMessage={phoneErrorMessage}
       />
-      <Text>Data de Nascimento:</Text>
-      {Platform.OS === "android" ? (
-        <Pressable
-          onPress={() =>
-            DateTimePickerAndroid.open({
-              value: birthDate,
-              mode: "date",
-              display: "spinner",
-              onChange: handleBirthDateChange,
-            })
-          }
-          style={{
-            backgroundColor: "#FFF",
-            padding: 12,
-          }}
-        >
-          <Text>{birthDate.toLocaleDateString()}</Text>
-        </Pressable>
-      ) : (
-        <DateTimePicker
-          onChange={handleBirthDateChange}
-          mode="date"
-          value={birthDate}
-        />
-      )}
-      {birthDateErrorMessage && <Text>{birthDateErrorMessage}</Text>}
+      <DatePicker
+        label="Data de Nascimento:"
+        value={birthDate}
+        onValueChange={handleBirthDateChange}
+        invalidMessage={birthDateErrorMessage}
+      />
       <LabeledField
         label="Senha:"
         onValueChange={setPassword}
@@ -185,19 +160,12 @@ export default function AddUser() {
         options={[PossibleRolesPt.admin, PossibleRolesPt.user]}
         chosenValue={role}
         onValueSelected={setRole}
+        errorMessage={
+          missingRole ? "Selecione o nível de permissão desejada" : undefined
+        }
       />
-      {missingRole && <Text>Selecione o nível de permissão desejada</Text>}
-      <Pressable
-        onPress={handleSubmit}
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#FFF",
-        }}
-      >
-        {loadingCreate ? <ActivityIndicator /> : <Text>Criar</Text>}
-      </Pressable>
+      <Button label="Criar" loading={loadingCreate} onClick={handleSubmit} />
       {createError && <Text>{createError}</Text>}
-    </View>
+    </SafeAreaView>
   );
 }

@@ -1,9 +1,11 @@
 import * as React from "react";
-import { usePagination } from "@/hooks/use-pagination";
-import { listUsers } from "@/api/user/list-users";
-import { View, FlatList } from "react-native";
+import { FlatList } from "react-native";
 import { UserInfoCard } from "@/components/user-info-card";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { usePagination } from "@/hooks/use-pagination";
 import { useFocusEffect } from "expo-router";
+import { listUsers } from "@/api/user/list-users";
+import { H1 } from "@/components/h1";
 
 export default function UserList() {
   const {
@@ -17,12 +19,13 @@ export default function UserList() {
   useFocusEffect(resetList);
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         padding: 16,
       }}
     >
+      <H1>Lista de usuários</H1>
       <FlatList
         renderItem={(data) => {
           return (
@@ -38,6 +41,6 @@ export default function UserList() {
         keyExtractor={(user) => user.id}
         onEndReached={fetchNextPage}
       />
-    </View>
+    </SafeAreaView>
   );
 }
