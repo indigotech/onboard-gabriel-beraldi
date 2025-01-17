@@ -23,6 +23,13 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="details/[id]"
+        options={{
+          href: null,
+          title: "Detalhes do usuário",
+        }}
+      />
     </Tabs>
   );
 }

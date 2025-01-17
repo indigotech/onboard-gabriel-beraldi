@@ -22,7 +22,7 @@ import {
   rolePtToEn,
   getDatePortion,
 } from "@/utils";
-import { add } from "@/api/user/add";
+import { addUser } from "@/api/user/add-user";
 import { useRouter } from "expo-router";
 
 export default function AddUser() {
@@ -103,7 +103,7 @@ export default function AddUser() {
     }
 
     setLoadingCreate(true);
-    const response = await add({
+    const response = await addUser({
       name,
       email,
       phone,
